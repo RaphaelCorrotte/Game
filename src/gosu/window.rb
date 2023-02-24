@@ -18,7 +18,7 @@ module Game
       self.caption = "Game"
       @rules = Rules.new(self)
       @matrix = Matrix.instance
-      6.times { @rules.add_entity(1, 1) }
+      125.times { @rules.add_entity(1, 1) }
       @rules.entities.each { |e| e.warp(rand(Gosu.screen_width - 300), rand(Gosu.screen_height - 300)) }
       @player = @rules.add_entity(Player.new(self))
       @player.warp(12, 12)
@@ -27,6 +27,7 @@ module Game
 
     def draw
       @rules.entities.each(&:draw)
+      quadtree.draw
     end
 
     def update
@@ -35,7 +36,6 @@ module Game
       @player.y_coordinate += 5 if Gosu.button_down?(Gosu::KB_DOWN)
       @player.y_coordinate -= 5 if Gosu.button_down?(Gosu::KB_UP)
       @player.warp(@player.x_coordinate, @player.y_coordinate)
-      quadtree
     end
 
     def entity_over_cell(entity)
@@ -54,7 +54,8 @@ module Game
       grid = Grid.new(min_x, min_y, (max_x - min_x), (max_y - min_y))
       qtree = QuadTree.new(grid, 4)
       entities.each { |e| qtree.insert(e) }
-      p qtree.entities_count
+      p qtree.query(Grid.new(@player.x_coordinate, @player.y_coordinate,32, 32)).count
+      qtree
     end
   end
 end

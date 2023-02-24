@@ -5,7 +5,6 @@ require File.expand_path("grid", File.dirname(__FILE__))
 module Game
   class QuadTree
     attr_reader :divided, :boundary, :capacity, :entities, :northwest, :northeast, :southwest, :southeast
-    private :subdivide
 
     def initialize(boundary, capacity)
       @boundary = boundary
@@ -17,8 +16,8 @@ module Game
     def subdivide
       @northeast = QuadTree.new(Grid.new(@boundary.x_coordinate + @boundary.width / 2, @boundary.y_coordinate, @boundary.width / 2, @boundary.height / 2), @capacity)
       @northwest = QuadTree.new(Grid.new(@boundary.x_coordinate, @boundary.y_coordinate, @boundary.width / 2, @boundary.height / 2), @capacity)
-      @southeast = QuadTree.new(Grid.new(@boundary.x_coordinate + @boundary.width / 2, @boundary.y_coordinate - @boundary.height / 2, @boundary.width / 2, @boundary.height / 2), @capacity)
-      @southwest = QuadTree.new(Grid.new(@boundary.x_coordinate, @boundary.y_coordinate - @boundary.height / 2, @boundary.width / 2, @boundary.height / 2), @capacity)
+      @southeast = QuadTree.new(Grid.new(@boundary.x_coordinate + @boundary.width / 2, @boundary.y_coordinate + @boundary.height / 2, @boundary.width / 2, @boundary.height / 2), @capacity)
+      @southwest = QuadTree.new(Grid.new(@boundary.x_coordinate, @boundary.y_coordinate + @boundary.height / 2, @boundary.width / 2, @boundary.height / 2), @capacity)
     end
 
     def insert(entity)
@@ -62,5 +61,18 @@ module Game
     def entities_count
       [@northwest, @northeast, @southwest, @southeast].sum { _1&.entities_count || 0 } + @entities.count
     end
+
+    def draw
+      Gosu.draw_line(@boundary.x_coordinate, @boundary.y_coordinate, Gosu::Color::WHITE, @boundary.x_coordinate + @boundary.width, @boundary.y_coordinate, Gosu::Color::WHITE)
+      Gosu.draw_line(@boundary.x_coordinate, @boundary.y_coordinate, Gosu::Color::WHITE, @boundary.x_coordinate, @boundary.y_coordinate + @boundary.height, Gosu::Color::WHITE)
+      Gosu.draw_line(@boundary.x_coordinate + @boundary.width, @boundary.y_coordinate, Gosu::Color::WHITE, @boundary.x_coordinate + @boundary.width, @boundary.y_coordinate + @boundary.height, Gosu::Color::WHITE)
+      Gosu.draw_line(@boundary.x_coordinate, @boundary.y_coordinate + @boundary.height, Gosu::Color::WHITE, @boundary.x_coordinate + @boundary.width, @boundary.y_coordinate + @boundary.height, Gosu::Color::WHITE)
+      @northwest&.draw
+      @northeast&.draw
+      @southwest&.draw
+      @southeast&.draw
+    end
+
+    private :subdivide
   end
 end
