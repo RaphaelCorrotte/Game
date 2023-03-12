@@ -1,0 +1,13 @@
+module Game
+  class Entity
+    attr_reader window : Game::Window
+    attr_accessor x_coordinate : Integer
+    attr_accessor y_coordinate : Integer
+    attr_reader width : Integer
+    attr_reader height : Integer
+
+    def initialize: (Game::Window, Integer, Integer) -> void
+    def warp: (Integer, Integer) -> void
+    def draw: -> void
+  end
+end

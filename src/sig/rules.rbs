@@ -1,0 +1,11 @@
+module Game
+  class Rules
+    attr_reader window: Window
+    attr_reader entities: Array[Game::Entity]
+
+    def initialize: (Game::Window) -> void
+    def add_entity: (Game::Entity | Integer, Integer) -> void
+    def cell_count: -> Integer
+    def cell_size: -> Integer
+  end
+end

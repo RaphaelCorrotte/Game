@@ -1,0 +1,13 @@
+module Game
+  class Grid
+    attr_reader x_coordinate: Integer | BigDecimal
+    attr_reader y_coordinate: Integer | BigDecimal
+    attr_reader width: Integer | BigDecimal
+    attr_reader height: Integer | BigDecimal
+
+    def initialize: (Integer | BigDecimal, Integer | BigDecimal, Integer | BigDecimal, Integer | BigDecimal) -> void
+    def intersect?: (Grid) -> bool
+    def contain?: (Grid) -> bool
+    def draw: -> void
+  end
+end

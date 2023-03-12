@@ -1,0 +1,20 @@
+module Game
+  class QuadTree
+    attr_reader divided: bool
+    attr_reader boundary: Grid
+    attr_reader capacity: Integer
+    attr_reader entities: Array[Entity]
+    attr_reader northwest: QuadTree
+    attr_reader northeast: QuadTree
+    attr_reader southwest: QuadTree
+    attr_reader southeast: QuadTree
+
+    def initialize: (Grid, Integer) -> void
+    def subdivide: -> void
+    def insert: (Game::Entity) -> bool
+    def query: (Grid, Array[Entity]) -> Array[Entity]
+    def entities_overlapping: (Grid) -> Array[Entity]
+    def entities_count: -> Integer
+    def drax: -> void
+  end
+end

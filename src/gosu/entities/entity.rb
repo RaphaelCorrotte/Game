@@ -2,7 +2,8 @@
 
 module Game
   class Entity
-    attr_reader :window, :x_coordinate, :y_coordinate, :width, :height
+    attr_reader :window, :x_coordinate, :width, :height
+    attr_accessor :x_coordinate, :y_coordinate
 
     def initialize(window, width = Constants::ENTITY_SIZE, height = Constants::ENTITY_SIZE)
       @window = window

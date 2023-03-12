@@ -58,6 +58,14 @@ module Game
       found
     end
 
+    def entities_overlapping(grid = @boundary)
+      overlapping = []
+      query(grid).each do |e|
+        overlapping << e if grid.intersect?(Grid.new(e.x_coordinate, e.y_coordinate, e.width, e.height))
+      end
+      overlapping
+    end
+
     def entities_count
       [@northwest, @northeast, @southwest, @southeast].sum { _1&.entities_count || 0 } + @entities.count
     end
@@ -65,8 +73,10 @@ module Game
     def draw
       Gosu.draw_line(@boundary.x_coordinate, @boundary.y_coordinate, Gosu::Color::WHITE, @boundary.x_coordinate + @boundary.width, @boundary.y_coordinate, Gosu::Color::WHITE)
       Gosu.draw_line(@boundary.x_coordinate, @boundary.y_coordinate, Gosu::Color::WHITE, @boundary.x_coordinate, @boundary.y_coordinate + @boundary.height, Gosu::Color::WHITE)
-      Gosu.draw_line(@boundary.x_coordinate + @boundary.width, @boundary.y_coordinate, Gosu::Color::WHITE, @boundary.x_coordinate + @boundary.width, @boundary.y_coordinate + @boundary.height, Gosu::Color::WHITE)
-      Gosu.draw_line(@boundary.x_coordinate, @boundary.y_coordinate + @boundary.height, Gosu::Color::WHITE, @boundary.x_coordinate + @boundary.width, @boundary.y_coordinate + @boundary.height, Gosu::Color::WHITE)
+      Gosu.draw_line(@boundary.x_coordinate + @boundary.width, @boundary.y_coordinate, Gosu::Color::WHITE, @boundary.x_coordinate + @boundary.width, @boundary.y_coordinate + @boundary.height,
+                     Gosu::Color::WHITE)
+      Gosu.draw_line(@boundary.x_coordinate, @boundary.y_coordinate + @boundary.height, Gosu::Color::WHITE, @boundary.x_coordinate + @boundary.width, @boundary.y_coordinate + @boundary.height,
+                     Gosu::Color::WHITE)
       @northwest&.draw
       @northeast&.draw
       @southwest&.draw

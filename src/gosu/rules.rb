@@ -21,23 +21,5 @@ module Game
                    end
       @entities[-1]
     end
-
-    def find_entities(x_coordinate, y_coordinate)
-      @entities.select do |entity|
-        entity.x_coordinate[0].between?(x_coordinate[0], x_coordinate[1]) && entity.y_coordinate[0].between?(y_coordinate[0], y_coordinate[1])
-      end
-    end
-
-    def entities_around(entity)
-      [-1, 0, 1].repeated_permutation(2).reject { |x, y| (x.zero? && y.zero?) }.map do |x, y|
-        find_entities([entity.x_coordinate[0] + x, entity.x_coordinate[1] + x], [entity.y_coordinate[0] + y, entity.y_coordinate[1] + y])
-      end
-    end
-
-    def cell_count
-      [(Gosu.screen_width / Constants::ENTITY_SIZE).floor, (Gosu.screen_height / Constants::ENTITY_SIZE).floor]
-    end
-
-    def cell_size = CONSTANTS::ENTITY_SIZE
   end
 end

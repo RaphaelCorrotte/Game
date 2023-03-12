@@ -1,0 +1,5 @@
+module Game
+  class Player < Entity
+    def intitialize: (Window) -> void
+  end
+end

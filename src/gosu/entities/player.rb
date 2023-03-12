@@ -2,11 +2,12 @@
 
 module Game
   class Player < Entity
-    IDENTIFIER = 2
     def initialize(window)
       super(window, 1, 1)
     end
 
-    attr_writer :x_coordinate, :y_coordinate
+    def draw
+      Gosu.draw_rect(@x_coordinate, @y_coordinate, @width, @height, Gosu::Color::BLUE)
+    end
   end
 end

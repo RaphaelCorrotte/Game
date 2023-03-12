@@ -24,5 +24,13 @@ module Game
         point.y_coordinate >= @y_coordinate - @height &&
         point.y_coordinate <= @y_coordinate + @height
     end
+
+    # draw lines around the grid in different colors
+    def draw
+      Gosu.draw_line(@x_coordinate + 5, @y_coordinate + 5, Gosu::Color::RED, @x_coordinate + @width, @y_coordinate, Gosu::Color::RED)
+      Gosu.draw_line(@x_coordinate + 5, @y_coordinate + 5, Gosu::Color::YELLOW, @x_coordinate, @y_coordinate + @height, Gosu::Color::YELLOW)
+      Gosu.draw_line(@x_coordinate + @width, @y_coordinate, Gosu::Color::FUCHSIA, @x_coordinate + @width, @y_coordinate + @height, Gosu::Color::FUCHSIA)
+      Gosu.draw_line(@x_coordinate, @y_coordinate + @height, Gosu::Color::GREEN, @x_coordinate + @width, @y_coordinate + @height, Gosu::Color::GREEN)
+    end
   end
 end
