@@ -31,9 +31,10 @@ module Game
         @camera.displayed_entities.each(&:draw)
         Gosu.draw_line(@camera.grid.x_coordinate, @camera.grid.y_coordinate, Gosu::Color::RED, @player.x_coordinate, @player.y_coordinate, Gosu::Color::RED, 1)
         @player.draw
-        qtree = quad_tree
-        qtree.draw
-        p qtree.entities_count == @camera.displayed_entities.count
+        if (qtree = quad_tree)
+          qtree.draw
+          p qtree.query(@camera.grid).count
+        end
         @camera.grid.draw
       end
     end
@@ -48,6 +49,8 @@ module Game
     end
 
     def quad_tree(entities = @camera.displayed_entities, grid = nil)
+      return false if entities.empty?
+
       min_x = entities.map(&:x_coordinate).min
       min_y = entities.map(&:y_coordinate).min
       max_x = entities.map { |e| e.x_coordinate + e.width }.max

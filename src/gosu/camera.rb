@@ -12,8 +12,8 @@ module Game
 
     def displayed_entities
       @window.quad_tree(@window.rules.entities.reject do |e|
-                          e == @window.player
-                        end).query(grid)
+        e == @window.player
+      end).query(grid)
     end
 
     def grid
