@@ -8,6 +8,7 @@ module Game
 
     def initialize: (Game::Window, Integer, Integer) -> void
     def warp: (Integer, Integer) -> void
+    def grid: -> Game::Grid
     def draw: -> void
   end
 end

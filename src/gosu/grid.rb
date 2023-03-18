@@ -19,10 +19,8 @@ module Game
     end
 
     def contain?(point)
-      point.x_coordinate >= @x_coordinate - @width &&
-        point.x_coordinate <= @x_coordinate + @width &&
-        point.y_coordinate >= @y_coordinate - @height &&
-        point.y_coordinate <= @y_coordinate + @height
+      point.x_coordinate.between?(@x_coordinate - point.width, @x_coordinate + @width) &&
+        point.y_coordinate.between?(@y_coordinate - point.height, @y_coordinate + @height)
     end
 
     # draw lines around the grid in different colors

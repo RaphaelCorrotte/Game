@@ -21,7 +21,7 @@ module Game
     end
 
     def insert(entity)
-      return false unless @boundary.contain?(entity)
+      return false unless @boundary.contain?(entity.grid)
 
       if @entities.count < @capacity
         @entities << entity

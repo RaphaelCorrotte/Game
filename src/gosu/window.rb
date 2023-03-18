@@ -16,7 +16,7 @@ module Game
     def initialize
       super(Gosu.screen_width, Gosu.screen_height, Hash[resizable: true])
       @rules = Rules.new(self)
-      120.times { @rules.add_entity(1, 1) }
+      10.times { @rules.add_entity(1, 1) }
       @rules.entities.each { |e| e.warp(rand(width - 64), rand(height - 64)) }
       @player = @rules.add_entity(Player.new(self))
       @player.warp((width / 2) - @player.width / 2, (height / 2))
@@ -36,6 +36,7 @@ module Game
           p qtree.query(@camera.grid).count
         end
         @camera.grid.draw
+        Gosu.draw_line(mouse_x, mouse_y, Gosu::Color::RED, @player.x_coordinate, @player.y_coordinate, Gosu::Color::RED) if @player.grid.contain?(Grid.new(mouse_x, mouse_y, 1, 1))
       end
     end
 
