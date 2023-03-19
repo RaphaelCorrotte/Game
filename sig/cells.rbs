@@ -1,0 +1,10 @@
+module Game
+  class Cells
+    WIDTH: Integer
+    HEIGHT: Integer
+    attr_accessor boundary: Grid
+    attr_reader cells: Array[Array[Integer]]
+
+    def initialize: (Grid boundary) -> void
+  end
+end

@@ -1,5 +1,9 @@
 module Game
   class Player < Entity
+    attr_reader room: Room | nil
+
     def intitialize: (Window) -> void
+    def enter: (Room) -> Room
+    def leave: -> nil
   end
 end

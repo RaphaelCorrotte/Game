@@ -2,7 +2,7 @@ module Game
   class Camera
     attr_reader window: Window
     def initialize: (Window) -> void
-    def displayed_entities: -> Array[Entity]
+    def displayed_entities: -> Array[Entity | Cell]
     def grid: -> Grid
     def update: (Window) -> Window
   end

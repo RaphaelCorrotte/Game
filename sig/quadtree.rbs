@@ -11,8 +11,8 @@ module Game
 
     def initialize: (Grid, Integer) -> void
     def subdivide: -> void
-    def insert: (Game::Entity) -> bool
-    def query: (Grid, Array[Entity]) -> Array[Entity]
+    def insert: (Entity | Cell) -> bool
+    def query: (Grid, Array[Entity | Cell]) -> Array[Entity | Cell]
     def entities_overlapping: (Grid) -> Array[Entity]
     def entities_count: -> Integer
     def drax: -> void

@@ -44,7 +44,7 @@ module Game
       end
     end
 
-    def query(grid, found = [])
+    def query(grid = @boundary, found = [])
       return found unless @boundary.intersect?(grid)
 
       @entities.each { |entity| found << entity if grid.contain?(Grid.new(entity.x_coordinate, entity.y_coordinate, entity.width, entity.height)) }
@@ -60,7 +60,7 @@ module Game
 
     def entities_overlapping(grid = @boundary)
       overlapping = []
-      query(grid).each do |e|
+      query(grid).reject { |e| e.class <= Cell }.each do |e|
         overlapping << e if grid.intersect?(Grid.new(e.x_coordinate, e.y_coordinate, e.width, e.height))
       end
       overlapping
@@ -77,10 +77,12 @@ module Game
                      Gosu::Color::WHITE)
       Gosu.draw_line(@boundary.x_coordinate, @boundary.y_coordinate + @boundary.height, Gosu::Color::WHITE, @boundary.x_coordinate + @boundary.width, @boundary.y_coordinate + @boundary.height,
                      Gosu::Color::WHITE)
-      @northwest&.draw
-      @northeast&.draw
-      @southwest&.draw
-      @southeast&.draw
+      return unless @divided
+
+      @northwest.draw
+      @northeast.draw
+      @southwest.draw
+      @southeast.draw
     end
 
     private :subdivide

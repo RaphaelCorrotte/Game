@@ -1,0 +1,14 @@
+module Game
+  class Room
+    attr_reader window: Window
+    attr_reader width: Integer
+    attr_reader height: Integer
+    attr_reader x_coordinate: Integer
+    attr_reader y_coordinate: Integer
+
+    def initialize: (Window, Integer, Integer) -> void
+    def quad_tree: -> QuadTree
+    def define_position: (Player) -> Room
+    def entities: -> Array[Entity | Cell]
+  end
+end

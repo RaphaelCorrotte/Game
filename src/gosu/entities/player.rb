@@ -2,8 +2,18 @@
 
 module Game
   class Player < Entity
+    attr_reader :room
+
     def initialize(window)
       super(window, 1, 1)
+    end
+
+    def enter(room)
+      @room = room
+    end
+
+    def leave
+      @room = nil
     end
 
     def draw

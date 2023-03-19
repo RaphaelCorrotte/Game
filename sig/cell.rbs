@@ -1,0 +1,14 @@
+module Game
+  class Cell
+    WIDTH: Integer
+    HEIGHT: Integer
+    attr_reader x_coordinate: Integer
+    attr_reader y_coordinate: Integer
+    attr_reader grid: Grid
+    attr_reader width: Integer
+    attr_reader height: Integer
+
+    def initialize: (Integer, Integer) -> void
+    def warp: (Integer, Integer) -> void
+  end
+end

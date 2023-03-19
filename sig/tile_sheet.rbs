@@ -1,0 +1,7 @@
+module Game
+  class TileSheet
+    attr_reader sheet: Magick::Image
+
+    def initialize: (Magick::Image sheet) -> void
+  end
+end
