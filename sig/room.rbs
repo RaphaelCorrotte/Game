@@ -7,8 +7,9 @@ module Game
     attr_reader y_coordinate: Integer
 
     def initialize: (Window, Integer, Integer) -> void
-    def quad_tree: -> QuadTree
-    def define_position: (Player) -> Room
+    def cells: -> QuadTree
+    def grid: -> Grid
+    def define_position: (Player | Grid) -> Room
     def entities: -> Array[Entity | Cell]
   end
 end

@@ -22,9 +22,5 @@ module Game
                @window.width,
                @window.height)
     end
-
-    def update(window)
-      @window = window
-    end
   end
 end

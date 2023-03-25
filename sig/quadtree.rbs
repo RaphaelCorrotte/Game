@@ -15,6 +15,6 @@ module Game
     def query: (Grid, Array[Entity | Cell]) -> Array[Entity | Cell]
     def entities_overlapping: (Grid) -> Array[Entity]
     def entities_count: -> Integer
-    def drax: -> void
+    def draw: -> void
   end
 end

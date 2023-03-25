@@ -7,7 +7,7 @@ module Game
     attr_reader height : Integer
 
     def initialize: (Game::Window, Integer, Integer) -> void
-    def warp: (Integer, Integer) -> void
+    def warp: (Integer, Integer) -> self
     def grid: -> Game::Grid
     def draw: -> void
   end

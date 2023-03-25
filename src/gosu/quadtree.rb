@@ -58,10 +58,10 @@ module Game
       found
     end
 
-    def entities_overlapping(grid = @boundary)
+    def entities_overlapping(grid = @boundary, entities = query(grid))
       overlapping = []
-      query(grid).reject { |e| e.class <= Cell }.each do |e|
-        overlapping << e if grid.intersect?(Grid.new(e.x_coordinate, e.y_coordinate, e.width, e.height))
+      entities.reject { |e| e.class <= Cell }.each do |e|
+        overlapping << e if grid.contain?(Grid.new(e.x_coordinate, e.y_coordinate, e.width, e.height))
       end
       overlapping
     end

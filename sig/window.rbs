@@ -7,8 +7,8 @@ module Game
     def initialize: -> void
     def update: -> void
     def draw: -> void
-    def quad_tree: (Array[Entity], Grid | nil) -> QuadTree
+    def quad_tree: (Array[Entity | Cell], Grid | nil) -> QuadTree
     def entity_over_entity: (Entity, Grid | nil) -> Array[Entity | Cell]
-    def allowed_next_move?: (Entity, Symbol) -> bool
+    def allowed_next_move?: (Entity, Symbol) -> (Integer | bool)
   end
 end

@@ -15,14 +15,10 @@ module Game
     def warp(x_coordinate, y_coordinate)
       @x_coordinate = x_coordinate
       @y_coordinate = y_coordinate
+      self
     end
 
-    def grid
-      Grid.new(@x_coordinate, @y_coordinate, @width, @height)
-    end
-
-    def draw
-      Gosu.draw_rect(@x_coordinate, @y_coordinate, @width, @height, Gosu::Color::WHITE)
-    end
+    def grid = Grid.new(@x_coordinate, @y_coordinate, @width, @height)
+    def draw = Gosu.draw_rect(@x_coordinate, @y_coordinate, @width, @height, Gosu::Color::WHITE)
   end
 end

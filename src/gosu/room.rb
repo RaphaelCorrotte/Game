@@ -12,7 +12,7 @@ module Game
       @height = (height % 32).zero? ? height : height + (32 - height % 32)
     end
 
-    def quad_tree
+    def cells
       grid = Grid.new(0, 0, @width, @height)
       cells = []
       (0..@width / 32).each do |x|
@@ -23,11 +23,15 @@ module Game
       @window.quad_tree(cells, grid)
     end
 
+    def grid
+      Grid.new(@x_coordinate, @y_coordinate, @width, @height)
+    end
+
     def define_position(player)
       x_coordinate = player.x_coordinate - @width / 2
       y_coordinate = player.y_coordinate - @height / 2
-      @x_coordinate ||= (x_coordinate % 32).zero? ? x_coordinate : x_coordinate + (32 - x_coordinate % 32)
-      @y_coordinate ||= (y_coordinate % 32).zero? ? y_coordinate : y_coordinate + (32 - y_coordinate % 32)
+      @x_coordinate ||= (x_coordinate % 32).zero? ? x_coordinate : x_coordinate - (32 - x_coordinate % 32)
+      @y_coordinate ||= (y_coordinate % 32).zero? ? y_coordinate : y_coordinate - (32 - y_coordinate % 32)
       self
     end
 
@@ -36,8 +40,8 @@ module Game
     end
 
     def draw(image)
-      quad_tree.query.each do |cell|
-        image.draw(cell.x_coordinate + @x_coordinate, cell.y_coordinate + @y_coordinate, 0)
+      cells.query.each do |cell|
+        image.draw(cell.x_coordinate + @x_coordinate, cell.y_coordinate + @y_coordinate, 0, 2, 2)
       end
     end
   end

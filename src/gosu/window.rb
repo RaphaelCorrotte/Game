@@ -3,12 +3,10 @@
 require "gosu"
 require "rmagick"
 require File.expand_path("rules", File.dirname(__FILE__))
-require File.expand_path("cells", File.dirname(__FILE__))
 require File.expand_path("constants", File.dirname(__FILE__))
 require File.expand_path("quadtree", File.dirname(__FILE__))
 require File.expand_path("grid", File.dirname(__FILE__))
 require File.expand_path("camera", File.dirname(__FILE__))
-require File.expand_path("tile_sheet", File.dirname(__FILE__))
 require File.expand_path("room", File.dirname(__FILE__))
 require File.expand_path("entities/player", File.dirname(__FILE__))
 
@@ -21,36 +19,37 @@ module Game
       @rules = Rules.new(self)
       10.times { @rules.add_entity(1, 1) }
       @rules.entities.each do |e|
-        rand_x = rand(width - 64)
-        rand_y = rand(height - 64)
+        rand_x = rand(-500..500)
+        rand_y = rand(-500..500)
         (rand_x % 32).zero? ? rand_x : rand_x - (32 + rand_x % 32)
         (rand_y % 32).zero? ? rand_y : rand_y - (32 + rand_y % 32)
         e.warp(rand_x, rand_y)
       end
       @player = @rules.add_entity(Player.new(self))
-      @player.warp((width / 2) - @player.width / 2, (height / 2))
+      @player.warp(0, 0)
       @camera = Camera.new(self)
-      @image = Gosu::Image.new("images/tilesheet.png").subimage(0, 0, 32, 32)
-      room = Room.new(self, 1000, 500)
-      @player.enter(room)
+      @room = Room.new(self, 1000, 500)
+      @room.define_position(Grid.new(0, 0, 1000, 500))
+      @image = Gosu::Image.load_tiles("images/tilesheet.png", 32, 32, tileable: true)
+      @icon = Gosu::Image.new("images/player.png", tileable: true)
     end
 
     def draw
-      @player.room&.define_position(@player)
       Gosu.translate(-@camera.grid.x_coordinate, -@camera.grid.y_coordinate) do
-        @player.room&.draw(@image)
+        @player.room&.draw(@image[46])
         @player.room&.entities&.each(&:draw)
         @player.draw
+        @player.move(:right) if button_down?(Gosu::KB_RIGHT)
+        @player.move(:left) if button_down?(Gosu::KB_LEFT)
+        @player.move(:forward) if button_down?(Gosu::KB_UP)
+        @player.move(:backward) if button_down?(Gosu::KB_DOWN)
       end
     end
 
     def update
-      @player.x_coordinate -= 5 if Gosu.button_down?(Gosu::KB_LEFT) && allowed_next_move?(@player, :left)
-      @player.x_coordinate += 5 if Gosu.button_down?(Gosu::KB_RIGHT) && allowed_next_move?(@player, :right)
-      @player.y_coordinate += 5 if Gosu.button_down?(Gosu::KB_DOWN) && allowed_next_move?(@player, :backward)
-      @player.y_coordinate -= 5 if Gosu.button_down?(Gosu::KB_UP) && allowed_next_move?(@player, :forward)
-      @player.warp(@player.x_coordinate, @player.y_coordinate)
-      @camera.update(self)
+      # p @player.x_coordinate, @player.y_coordinate
+      @player.enter(@room) if @room.grid.contain?(@player.grid) && @player.room.nil?
+      @player.leave if @player.room == @room && !@room.grid.contain?(@player.grid)
     end
 
     def quad_tree(entities = @camera.displayed_entities, grid = nil)
@@ -89,7 +88,13 @@ module Game
       else
         return false
       end
-      quad_tree(entities).query(Grid.new(next_entity.x_coordinate, next_entity.y_coordinate, next_entity.width, next_entity.height)).empty?
+      query = quad_tree(entities).query(Grid.new(next_entity.x_coordinate, next_entity.y_coordinate, next_entity.width, next_entity.height))
+      return true if query.empty?
+
+      ((query.first.x_coordinate + 32) + entity.x_coordinate).abs if next_move == :left
+      ((query.first.x_coordinate - 32) + entity.x_coordinate).abs if next_move == :right
+      ((query.first.y_coordinate + 32) - entity.y_coordinate).abs if next_move == :forward
+      ((query.first.y_coordinate - 32) - entity.y_coordinate).abs if next_move == :backward
     end
   end
 end
