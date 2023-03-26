@@ -46,17 +46,33 @@ module Game
         overlapping = overlapping.first
         x_coordinate = case direction
                        when :left
-                         overlapping.x_coordinate + overlapping.width
+                         if (@y_coordinate + height) == overlapping.y_coordinate || @y_coordinate == (overlapping.y_coordinate + overlapping.height)
+                           @x_coordinate - 4
+                         else
+                           overlapping.x_coordinate + overlapping.width
+                         end
                        when :right
-                         overlapping.x_coordinate - width
+                         if (@y_coordinate + height) == overlapping.y_coordinate || @y_coordinate == (overlapping.y_coordinate + overlapping.height)
+                           @x_coordinate + 4
+                         else
+                           overlapping.x_coordinate - width
+                         end
                        else
                          @x_coordinate
                        end
         y_coordinate = case direction
                        when :forward
-                         overlapping.y_coordinate + overlapping.height
+                         if (overlapping.x_coordinate + overlapping.width) == @x_coordinate || overlapping.x_coordinate == (@x_coordinate + width)
+                           @y_coordinate - 4
+                         else
+                           overlapping.y_coordinate + overlapping.height
+                         end
                        when :backward
-                         overlapping.y_coordinate - height
+                         if (overlapping.x_coordinate + overlapping.width) == @x_coordinate || overlapping.x_coordinate == (@x_coordinate + width)
+                           @y_coordinate + 4
+                         else
+                           overlapping.y_coordinate - height
+                         end
                        else
                          @y_coordinate
                        end

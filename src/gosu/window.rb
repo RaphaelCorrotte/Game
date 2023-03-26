@@ -19,8 +19,8 @@ module Game
       @rules = Rules.new(self)
       10.times { @rules.add_entity(1, 1) }
       @rules.entities.each do |e|
-        rand_x = rand(-500..500)
-        rand_y = rand(-500..500)
+        rand_x = rand(0..500)
+        rand_y = rand(0..500)
         (rand_x % 32).zero? ? rand_x : rand_x - (32 + rand_x % 32)
         (rand_y % 32).zero? ? rand_y : rand_y - (32 + rand_y % 32)
         e.warp(rand_x, rand_y)
@@ -31,7 +31,6 @@ module Game
       @room = Room.new(self, 1000, 500)
       @room.define_position(Grid.new(0, 0, 1000, 500))
       @image = Gosu::Image.load_tiles("images/tilesheet.png", 32, 32, tileable: true)
-      @icon = Gosu::Image.new("images/player.png", tileable: true)
     end
 
     def draw
