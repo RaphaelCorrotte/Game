@@ -3,10 +3,12 @@ module Game
     attr_reader window: Window
     attr_reader width: Integer
     attr_reader height: Integer
-    attr_reader x_coordinate: Integer
-    attr_reader y_coordinate: Integer
+    attr_reader x_coordinate: Integer | BigDecimal
+    attr_reader y_coordinate: Integer | BigDecimal
 
     def initialize: (Window, Integer, Integer) -> void
+
+    def boundaries: -> Hash[Symbol, Grid]
     def cells: -> QuadTree
     def grid: -> Grid
     def define_position: (Player | Grid) -> Room

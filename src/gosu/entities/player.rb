@@ -10,10 +10,10 @@ module Game
       @blocked_camera = false
     end
 
-    def outside?
+    def inside?
       return false unless room?
 
-      @room&.grid&.contain?(grid)
+      @room&.contain?(grid)
     end
 
     def move(direction)
@@ -37,7 +37,6 @@ module Game
       next_state = Entity.new(@window, @width, @height).warp(x_direction, y_direction)
       qtree = @window.quad_tree.dup
       qtree.insert(next_state)
-      next_state.grid.draw
       overlapping = qtree.query(next_state.grid).reject { |e| e == self || e == next_state }
       if overlapping.empty?
         warp(x_direction, y_direction)
@@ -80,9 +79,37 @@ module Game
       end
     end
 
+    def distance_from_walls
+      return nil unless room?
+
+      distances = Hash[]
+      @room.boundaries.each do |boundary|
+        case boundary[0]
+        when :north
+          distances[:north] = (@y_coordinate - boundary[1].y_coordinate).abs
+        when :south
+          distances[:south] = (boundary[1].y_coordinate - (@y_coordinate + height)).abs
+        when :east
+          distances[:east] = (boundary[1].x_coordinate - (@x_coordinate + width)).abs
+        when :west
+          distances[:west] = (@x_coordinate - boundary[1].x_coordinate).abs
+        else
+          0
+        end
+      end
+      distances
+    end
+
+    def next_wall
+      return nil unless room?
+
+      distances = distance_from_walls
+      Hash["#{distances.filter { |_, v| v == distances.values.min }.keys.first}": distances.values.min]
+    end
+
     def enter(room) = @room = room
     def leave = @room = nil
     def room? = !@room.nil?
-    def draw = Gosu.draw_rect(@x_coordinate, @y_coordinate, @width, @height, Gosu::Color::RED, 0)
+    def draw = grid.draw
   end
 end

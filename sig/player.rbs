@@ -3,10 +3,11 @@ module Game
     attr_reader room: Room | nil
     attr_reader blocked_camera: bool
 
+    def distance_from_walls: -> Hash[Symbol, Float] | nil
     def intitialize: (Window) -> void
     def enter: (Room) -> Room
     def leave: -> nil
-    def outside?: -> bool
+    def inside?: -> bool
     def room?: -> bool
     def move: (Symbol) -> void
   end

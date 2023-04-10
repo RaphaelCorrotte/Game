@@ -1,8 +1,12 @@
 module Game
   class Camera
+    LOCK_DISTANCE: Integer
+
     attr_reader window: Window
+    attr_reader position: Array[Integer]
     def initialize: (Window) -> void
     def displayed_entities: -> Array[Entity | Cell]
     def grid: -> Grid
+    def manage_position: -> void
   end
 end

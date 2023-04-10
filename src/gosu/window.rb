@@ -29,26 +29,36 @@ module Game
       @player.warp(0, 0)
       @camera = Camera.new(self)
       @room = Room.new(self, 1000, 500)
-      @room.define_position(Grid.new(0, 0, 1000, 500))
-      @image = Gosu::Image.load_tiles("images/tilesheet.png", 32, 32, tileable: true)
+      @image = Gosu::Image.load_tiles("images/tileset.png", 32, 32, tileable: true)
     end
 
     def draw
-      Gosu.translate(-@camera.grid.x_coordinate, -@camera.grid.y_coordinate) do
-        @player.room&.draw(@image[46])
+      Gosu.translate(@camera.position[0] || -@camera.grid.x_coordinate, @camera.position[1] || -@camera.grid.y_coordinate) do
+        @room&.draw(@image[20 * 8])
         @player.room&.entities&.each(&:draw)
         @player.draw
-        @player.move(:right) if button_down?(Gosu::KB_RIGHT)
-        @player.move(:left) if button_down?(Gosu::KB_LEFT)
-        @player.move(:forward) if button_down?(Gosu::KB_UP)
-        @player.move(:backward) if button_down?(Gosu::KB_DOWN)
+        @player.room&.boundaries&.each_value(&:draw)
       end
     end
 
     def update
-      # p @player.x_coordinate, @player.y_coordinate
-      @player.enter(@room) if @room.grid.contain?(@player.grid) && @player.room.nil?
-      @player.leave if @player.room == @room && !@room.grid.contain?(@player.grid)
+      @player.move(:right) if button_down?(Gosu::KB_RIGHT)
+      @player.move(:left) if button_down?(Gosu::KB_LEFT)
+      @player.move(:forward) if button_down?(Gosu::KB_UP)
+      @player.move(:backward) if button_down?(Gosu::KB_DOWN)
+      @player.enter(@room) if @room.contain?(@player.grid) && @player.room.nil?
+      @player.leave unless @player.inside?
+      @camera.manage_position
+    end
+
+    def button_down(id)
+      case id
+      when Gosu::MsLeft
+        p "x: #{mouse_x}, y: #{mouse_y}"
+        p @camera.position
+      else
+        super
+      end
     end
 
     def quad_tree(entities = @camera.displayed_entities, grid = nil)
