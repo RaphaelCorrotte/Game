@@ -30,6 +30,7 @@ module Game
       p @position
       return unless player.room?
       return @position.clear if player.next_wall.values.first > LOCK_DISTANCE
+
       @position.clear unless @position[2] == player.next_wall.keys.first
       return unless @position.empty?
 
@@ -46,6 +47,8 @@ module Game
       when :east
         @position[0] = -grid.x_coordinate
         @position[1] = nil
+      else
+        @position.clear
       end
       @position[2] = player.next_wall.keys.first
     end
